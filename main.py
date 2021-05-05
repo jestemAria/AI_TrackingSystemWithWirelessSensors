@@ -34,6 +34,7 @@ def assign(visibility_mtx):
 
     if sensor is False:
         print("-> Tracking system completely solved")
+        show_result(visibility_mtx)
         return True
     else:
         for target in range(len(visibility_mtx[0])):
@@ -121,6 +122,49 @@ def is_idol(matrix):
         else:
             counter = 0
     return True
+
+
+def show_result(matrix):
+    res = []
+    counter = 0
+
+    for row in range(len(matrix)):
+        for column in range(len(matrix[0])):
+            if matrix[row][column] == 1:
+                res.append(column + 1)
+            else:
+                counter += 1
+                if counter == len(matrix[0]):
+                    res.append(-1)
+        counter = 0
+    print(res)
+
+    for sensor in range(len(res)):
+        if res[sensor] == -1:
+            print("Sensor", sensor, "has no target to track")
+        else:
+            print("Sensor", sensor, "is tracking -> Target", res[sensor])
+
+    print("=========================================================")
+
+    for targets in range(len(matrix[0])):
+        print("\t\t\t\t  < T -", targets + 1, ">")
+        print("\t  ________________|________________")
+        for sensor in range(len(res)):
+            if res[sensor] == targets + 1:
+                print("\t__|__", end="")
+        print()
+        for sensor in range(len(res)):
+            if res[sensor] == targets + 1:
+                if sensor / 10 < 0.9:
+                    print("\t|", sensor + 1, end="\t|")
+                else:
+                    print("\t|", sensor + 1, end="|")
+        print()
+        for sensor in range(len(res)):
+            if res[sensor] == targets + 1:
+                print("\t-----", end="")
+        print("\n")
 
 
 assign(visibility_matrix)
